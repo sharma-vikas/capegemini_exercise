@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.capegemini.cafe.exception.BillServiceException;
 import com.capegemini.cafe.service.CafeBillService;
 import com.capegemini.cafe.service.CafeBillServiceImpl;
 
@@ -21,7 +22,8 @@ public class CafeBillServiceTest {
 	private final static String STEAK_SANDWICH = "Steak Sandwich";
 	private final static String HOT_FOOD = "Hot food";
 	private final static String NEW_ITEM = "New item";
-	private final static String FOOD_TYPE = "Foo type";
+	private final static String FOOD_TYPE = "Food type";
+	private final static String INVALID_MENU_ITEM = "Invalid Menu Item";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -74,4 +76,31 @@ public class CafeBillServiceTest {
 		Assert.assertNull(cafeBillService.getOrderItem().get(COLA));
 		
 	}
+	
+	@Test
+	public void calculateBillTest(){
+		cafeBillService.orderItem(COLA, 2);
+		cafeBillService.orderItem(COFFEE, 2);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 1);
+		
+		Double totalAmount = cafeBillService.calculateBill();
+		
+		Assert.assertEquals("5.0", totalAmount.toString());
+	}
+	
+	@Test
+	public void calculateBillTestFailure(){
+		cafeBillService.orderItem(COLA, 2);
+		cafeBillService.orderItem(COFFEE, 2);
+		cafeBillService.orderItem(NEW_ITEM, 1);
+		
+		try{
+			cafeBillService.calculateBill();
+			Assert.fail("Control shouldn't reach here");
+		}catch(BillServiceException bse){
+			Assert.assertEquals(INVALID_MENU_ITEM, bse.getMessage());
+		}
+		
+	}
+	
 }

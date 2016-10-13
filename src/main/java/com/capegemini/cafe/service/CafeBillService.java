@@ -14,4 +14,6 @@ public interface CafeBillService {
 	
 	public Map<String, Integer> getOrderItem();
 	
+	public Double calculateBill();
+	
 }
