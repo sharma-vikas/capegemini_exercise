@@ -40,6 +40,8 @@ public class CafeBillServiceImpl implements CafeBillService {
 		
 		Double totalPrice = 0.0;
 		
+		boolean serviceCharge = false;
+		
 		Iterator<String> orderItemIterator = orderItem.keySet().iterator();
 		
 		while(orderItemIterator.hasNext()){
@@ -49,6 +51,15 @@ public class CafeBillServiceImpl implements CafeBillService {
 			Double itemTotalPrice = caclulateItemBill(item, quantity);
 			
 			totalPrice = totalPrice + itemTotalPrice;
+			
+			MenuItem menuItem = cafeMenu.get(item);
+			if(menuItem.getMenuType().contains("food")){
+				serviceCharge = true;
+			}
+		}
+		
+		if(serviceCharge){
+			totalPrice = totalPrice + totalPrice * .1;
 		}
 		
 		return totalPrice;

@@ -81,11 +81,10 @@ public class CafeBillServiceTest {
 	public void calculateBillTest(){
 		cafeBillService.orderItem(COLA, 2);
 		cafeBillService.orderItem(COFFEE, 2);
-		cafeBillService.orderItem(CHEESE_SANDWICH, 1);
 		
 		Double totalAmount = cafeBillService.calculateBill();
 		
-		Assert.assertEquals("5.0", totalAmount.toString());
+		Assert.assertEquals("3.0", totalAmount.toString());
 	}
 	
 	@Test
@@ -100,6 +99,17 @@ public class CafeBillServiceTest {
 		}catch(BillServiceException bse){
 			Assert.assertEquals(INVALID_MENU_ITEM, bse.getMessage());
 		}
+		
+	}
+	
+	@Test
+	public void calculateBillServiceChargeTest(){
+		cafeBillService.orderItem(COLA, 2);
+		cafeBillService.orderItem(COFFEE, 2);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 1);
+		
+		Double billAmount = cafeBillService.calculateBill();
+		Assert.assertEquals("5.5", billAmount.toString());
 		
 	}
 	
