@@ -1,5 +1,7 @@
 package com.capegemini.cafe.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,6 +18,7 @@ public class CafeBillServiceImpl implements CafeBillService {
 	private final static String INVALID_MENU_ITEM = "Invalid Menu Item";
 	private final static String FOOD = "food";
 	private final static String HOT_FOOD = "Hot food";
+	private final static Double HOT_FOOD_PERC = 0.20;
 	
 	public CafeBillServiceImpl(){
 		cafeMenu = new HashMap<String, MenuItem>();
@@ -60,7 +63,7 @@ public class CafeBillServiceImpl implements CafeBillService {
 			if(menuItem.getMenuType().contains(FOOD)){
 				serviceCharge = true;
 				if(menuItem.getMenuType().contains(HOT_FOOD)){
-					serviceChargePer = 0.20;
+					serviceChargePer = HOT_FOOD_PERC;
 				}
 				
 			}
@@ -68,6 +71,7 @@ public class CafeBillServiceImpl implements CafeBillService {
 		
 		if(serviceCharge){
 			serviceChargeAmount = totalPrice * serviceChargePer;
+			serviceChargeAmount = new BigDecimal(serviceChargeAmount.toString()).setScale(2,RoundingMode.HALF_UP).doubleValue();
 			totalPrice = totalPrice + serviceChargeAmount;
 		}
 		

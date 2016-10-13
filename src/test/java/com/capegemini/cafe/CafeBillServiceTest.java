@@ -123,4 +123,16 @@ public class CafeBillServiceTest {
 		Assert.assertEquals("9.0", billAmount.toString());
 		
 	}
+	
+	@Test
+	public void calculateBillHotFoodServiceChargeTwoDecimalPlacesTest(){
+		cafeBillService.orderItem(COLA, 7);
+		cafeBillService.orderItem(COFFEE, 5);
+		cafeBillService.orderItem(STEAK_SANDWICH, 3);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 5);
+		
+		Double billAmount = cafeBillService.calculateBill();
+		Assert.assertEquals("38.4", billAmount.toString());
+		
+	}
 }
