@@ -108,6 +108,7 @@ public class CafeBillServiceTest {
 		cafeBillService.orderItem(COFFEE, 2);
 		cafeBillService.orderItem(CHEESE_SANDWICH, 1);
 		
+		//Items Bill 5 + Service Charge@10%(Food item) .5 = 5.5
 		Double billAmount = cafeBillService.calculateBill();
 		Assert.assertEquals("5.5", billAmount.toString());
 		
@@ -119,6 +120,7 @@ public class CafeBillServiceTest {
 		cafeBillService.orderItem(COFFEE, 2);
 		cafeBillService.orderItem(STEAK_SANDWICH, 1);
 		
+		//Items Bill 7.5 + Service Charge@20%(Hot Food item) 1.5 = 9.0
 		Double billAmount = cafeBillService.calculateBill();
 		Assert.assertEquals("9.0", billAmount.toString());
 		
@@ -149,7 +151,7 @@ public class CafeBillServiceTest {
 		
 	}
 	
-	//Requirement only says to reduce the service charges to 20 if order includes any Hot Food item.
+	//Requirement only says to reduce the service charges to GBP 20 if order includes any Hot Food item.
 	@Test
 	public void calculateBillHotFoodServiceChargeNoMaxAmountTest(){
 		cafeBillService.orderItem(COLA, 7);
@@ -159,6 +161,20 @@ public class CafeBillServiceTest {
 		//Food Bill 253.5 + Service Charge 25.35(No max service charge consideration as no hot food item in order) = 278.85 
 		Double billAmount = cafeBillService.calculateBill();
 		Assert.assertEquals("278.85", billAmount.toString());
+		
+	}
+	
+	//Chosen Logger.Info over SysOut, No easy way to verify all logs got printed through test though verified manually, included all food item to ensure no breakage in logic
+	@Test
+	public void calculateBillLogsPrintTest(){
+		cafeBillService.orderItem(COLA, 7);
+		cafeBillService.orderItem(COFFEE, 50);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 100);
+		cafeBillService.orderItem(STEAK_SANDWICH, 50);
+		
+		//Food Bill 478.5 + Service Charge 20(No max service charge consideration as no hot food item in order) = 498.5 
+		Double billAmount = cafeBillService.calculateBill();
+		Assert.assertEquals("498.5", billAmount.toString());
 		
 	}
 }
