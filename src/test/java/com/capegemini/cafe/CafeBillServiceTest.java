@@ -113,4 +113,14 @@ public class CafeBillServiceTest {
 		
 	}
 	
+	@Test
+	public void calculateBillHotFoodServiceChargeTest(){
+		cafeBillService.orderItem(COLA, 2);
+		cafeBillService.orderItem(COFFEE, 2);
+		cafeBillService.orderItem(STEAK_SANDWICH, 1);
+		
+		Double billAmount = cafeBillService.calculateBill();
+		Assert.assertEquals("9.0", billAmount.toString());
+		
+	}
 }

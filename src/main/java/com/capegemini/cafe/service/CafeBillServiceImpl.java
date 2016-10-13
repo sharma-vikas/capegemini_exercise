@@ -14,6 +14,8 @@ public class CafeBillServiceImpl implements CafeBillService {
 	private Map<String, Integer> orderItem;
 	
 	private final static String INVALID_MENU_ITEM = "Invalid Menu Item";
+	private final static String FOOD = "food";
+	private final static String HOT_FOOD = "Hot food";
 	
 	public CafeBillServiceImpl(){
 		cafeMenu = new HashMap<String, MenuItem>();
@@ -38,9 +40,11 @@ public class CafeBillServiceImpl implements CafeBillService {
 	@Override
 	public Double calculateBill(){
 		
-		Double totalPrice = 0.0;
+		Double totalPrice = 0.00;
 		
 		boolean serviceCharge = false;
+		Double serviceChargePer = 0.10;
+		Double serviceChargeAmount = 0.00;
 		
 		Iterator<String> orderItemIterator = orderItem.keySet().iterator();
 		
@@ -53,13 +57,18 @@ public class CafeBillServiceImpl implements CafeBillService {
 			totalPrice = totalPrice + itemTotalPrice;
 			
 			MenuItem menuItem = cafeMenu.get(item);
-			if(menuItem.getMenuType().contains("food")){
+			if(menuItem.getMenuType().contains(FOOD)){
 				serviceCharge = true;
+				if(menuItem.getMenuType().contains(HOT_FOOD)){
+					serviceChargePer = 0.20;
+				}
+				
 			}
 		}
 		
 		if(serviceCharge){
-			totalPrice = totalPrice + totalPrice * .1;
+			serviceChargeAmount = totalPrice * serviceChargePer;
+			totalPrice = totalPrice + serviceChargeAmount;
 		}
 		
 		return totalPrice;
