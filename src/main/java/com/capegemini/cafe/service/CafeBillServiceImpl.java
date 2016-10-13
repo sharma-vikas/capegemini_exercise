@@ -19,6 +19,7 @@ public class CafeBillServiceImpl implements CafeBillService {
 	private final static String FOOD = "food";
 	private final static String HOT_FOOD = "Hot food";
 	private final static Double HOT_FOOD_PERC = 0.20;
+	private final static Double HOT_FOOD_MAX_SC = 20.00;
 	
 	public CafeBillServiceImpl(){
 		cafeMenu = new HashMap<String, MenuItem>();
@@ -72,7 +73,12 @@ public class CafeBillServiceImpl implements CafeBillService {
 		if(serviceCharge){
 			serviceChargeAmount = totalPrice * serviceChargePer;
 			serviceChargeAmount = new BigDecimal(serviceChargeAmount.toString()).setScale(2,RoundingMode.HALF_UP).doubleValue();
-			totalPrice = totalPrice + serviceChargeAmount;
+			if(serviceChargePer.equals(HOT_FOOD_PERC) && serviceChargeAmount > HOT_FOOD_MAX_SC){
+				totalPrice = totalPrice + HOT_FOOD_MAX_SC;
+			}else{
+				totalPrice = totalPrice + serviceChargeAmount;	
+			}
+			
 		}
 		
 		return totalPrice;

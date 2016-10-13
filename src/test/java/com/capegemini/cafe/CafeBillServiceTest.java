@@ -128,11 +128,37 @@ public class CafeBillServiceTest {
 	public void calculateBillHotFoodServiceChargeTwoDecimalPlacesTest(){
 		cafeBillService.orderItem(COLA, 7);
 		cafeBillService.orderItem(COFFEE, 5);
-		cafeBillService.orderItem(STEAK_SANDWICH, 3);
-		cafeBillService.orderItem(CHEESE_SANDWICH, 5);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 50);
 		
+		//Service Charge calculated as 10.850000000000001 but rounded to 10.85 
 		Double billAmount = cafeBillService.calculateBill();
-		Assert.assertEquals("38.4", billAmount.toString());
+		Assert.assertEquals("119.35", billAmount.toString());
+		
+	}
+	
+	@Test
+	public void calculateBillHotFoodServiceChargeMaxAmountTest(){
+		cafeBillService.orderItem(COLA, 7);
+		cafeBillService.orderItem(COFFEE, 5);
+		cafeBillService.orderItem(STEAK_SANDWICH, 5);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 50);
+		
+		//Food Bill 131 + Service Charge 20(initial calculation as 26.2) = 151 
+		Double billAmount = cafeBillService.calculateBill();
+		Assert.assertEquals("151.0", billAmount.toString());
+		
+	}
+	
+	//Requirement only says to reduce the service charges to 20 if order includes any Hot Food item.
+	@Test
+	public void calculateBillHotFoodServiceChargeNoMaxAmountTest(){
+		cafeBillService.orderItem(COLA, 7);
+		cafeBillService.orderItem(COFFEE, 50);
+		cafeBillService.orderItem(CHEESE_SANDWICH, 100);
+		
+		//Food Bill 253.5 + Service Charge 25.35(No max service charge consideration as no hot food item in order) = 278.85 
+		Double billAmount = cafeBillService.calculateBill();
+		Assert.assertEquals("278.85", billAmount.toString());
 		
 	}
 }
